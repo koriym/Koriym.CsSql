@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Koriym\CsSql\Cli\FormatCommand;
+
+$autoloadFiles = [
+    $_composer_autoload_path ?? null,
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+];
+
+foreach ($autoloadFiles as $autoloadFile) {
+    if ($autoloadFile === null || ! is_file($autoloadFile)) {
+        continue;
+    }
+
+    require $autoloadFile;
+    exit((new FormatCommand())->run($argv));
+}
+
+fwrite(STDERR, 'Could not find Composer autoloader.' . PHP_EOL);
+exit(1);

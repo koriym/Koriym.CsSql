@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Koriym\CelkoSql\Exception;
+namespace Koriym\CsSql\Exception;
 
-class LogicException extends \LogicException
+final class LogicException extends \LogicException
 {
 }
