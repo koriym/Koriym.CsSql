@@ -63,7 +63,35 @@ vendor/bin/cs-sql --check path/to/sql
 The command exits with `0` when all SQL files are already formatted and `1` when
 any file needs formatting.
 
-This repository checks its own SQL sample the same way:
+In application projects, wire SQL formatting into the normal Composer coding
+style scripts. The dedicated `sql` and `sql-fix` scripts are mostly for
+symmetry and readability; day-to-day use can stay with `composer cs` and
+`composer cs-fix`.
+
+```json
+{
+  "scripts": {
+    "cs": [
+      "phpcs",
+      "@sql"
+    ],
+    "cs-fix": [
+      "phpcbf src tests",
+      "@sql-fix"
+    ],
+    "sql": "cs-sql --check var/db/sql",
+    "sql-fix": "cs-sql var/db/sql"
+  },
+  "scripts-descriptions": {
+    "cs": "Check coding style",
+    "cs-fix": "Fix coding style",
+    "sql": "Check SQL formatting",
+    "sql-fix": "Fix SQL formatting"
+  }
+}
+```
+
+This repository checks its own SQL sample in the same way:
 
 ```bash
 composer sql-cs
