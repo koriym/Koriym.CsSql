@@ -1,6 +1,7 @@
 {
     "name": "koriym/cs-sql",
     "description": "A small SQL formatter for readable, clause-oriented SQL output.",
+    "homepage": "https://github.com/koriym/Koriym.CsSql",
     "license": "MIT",
     "authors": [
         {

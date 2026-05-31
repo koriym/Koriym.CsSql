@@ -1,5 +1,9 @@
 # koriym/cs-sql
 
+[![Continuous Integration](https://github.com/koriym/Koriym.CsSql/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/koriym/Koriym.CsSql/actions/workflows/continuous-integration.yml)
+[![Coding Standards](https://github.com/koriym/Koriym.CsSql/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/koriym/Koriym.CsSql/actions/workflows/coding-standards.yml)
+[![Static Analysis](https://github.com/koriym/Koriym.CsSql/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/koriym/Koriym.CsSql/actions/workflows/static-analysis.yml)
+
 A small PHP SQL formatter for stable, clause-oriented SQL output. It follows a
 fixed, tool-friendly style for diagnostics, logs, examples, and developer
 tooling.
