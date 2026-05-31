@@ -55,15 +55,24 @@ final class CsSql implements SqlFormatterInterface
 
     private const FUNCTION_LIKE_WORDS = [
         'AVG',
+        'CAST',
         'CONCAT',
+        'CONVERT',
         'COUNT',
-        'DATE_SUB',
         'COALESCE',
+        'DATE_FORMAT',
+        'DATE_SUB',
+        'IFNULL',
         'JSON_UNQUOTE',
+        'LENGTH',
+        'MAX',
+        'MIN',
         'NOW',
         'ROUND',
         'ROW_NUMBER',
+        'SUBSTRING',
         'SUM',
+        'TRIM',
         'VARCHAR',
     ];
 
@@ -688,8 +697,9 @@ final class CsSql implements SqlFormatterInterface
             $close = $this->findMatchingParen($head, $open);
             if ($close !== null) {
                 $lines[] = $this->indent($indent) . $this->inlineTokens(array_slice($head, 0, $open)) . ' (';
-                foreach ($this->splitByTopLevelComma(array_slice($head, $open + 1, $close - $open - 1)) as $index => $item) {
-                    $lines[] = $this->indent($indent + 1) . $this->inlineTokens($item) . ($index === count($this->splitByTopLevelComma(array_slice($head, $open + 1, $close - $open - 1))) - 1 ? '' : ',');
+                $columns = $this->splitByTopLevelComma(array_slice($head, $open + 1, $close - $open - 1));
+                foreach ($columns as $index => $item) {
+                    $lines[] = $this->indent($indent + 1) . $this->inlineTokens($item) . ($index === count($columns) - 1 ? '' : ',');
                 }
 
                 $lines[] = $this->indent($indent) . ')';

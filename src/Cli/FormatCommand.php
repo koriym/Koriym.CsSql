@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Koriym\CsSql\Cli;
 
+use FilesystemIterator;
 use Koriym\CsSql\CsSql;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use UnexpectedValueException;
 
 use function array_slice;
 use function count;
@@ -109,11 +111,24 @@ final class FormatCommand
             return $this->isSqlFile($path) ? [$path] : [];
         }
 
+        if (! is_readable($path)) {
+            fwrite($this->error, sprintf('Directory is not readable: %s', $path) . PHP_EOL);
+
+            return [];
+        }
+
         $files = [];
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($path),
-            RecursiveIteratorIterator::LEAVES_ONLY,
-        );
+        try {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::LEAVES_ONLY,
+                RecursiveIteratorIterator::CATCH_GET_CHILD,
+            );
+        } catch (UnexpectedValueException) {
+            fwrite($this->error, sprintf('Failed to read directory: %s', $path) . PHP_EOL);
+
+            return [];
+        }
 
         foreach ($iterator as $file) {
             if (! $file instanceof SplFileInfo || ! $file->isFile()) {
@@ -154,7 +169,11 @@ final class FormatCommand
             return false;
         }
 
-        file_put_contents($file, $formattedSql);
+        if (file_put_contents($file, $formattedSql) === false) {
+            fwrite($this->error, sprintf('Failed to write file: %s', $file) . PHP_EOL);
+
+            return false;
+        }
 
         return true;
     }
